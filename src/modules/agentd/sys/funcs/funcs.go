@@ -49,6 +49,7 @@ func BuildMappers() {
 					SocketStatSummaryMetrics,
 					UdpMetrics,
 					TcpMetrics,
+					PodMetrics,
 				},
 				Interval: interval,
 			},

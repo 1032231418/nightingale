@@ -70,8 +70,6 @@ func main() {
 		os.Exit(1)
 	}
 
-	fmt.Println(config.Config.K8sClient)
-
 	if config.Config.Enable.Mon {
 		monStart()
 	}
@@ -167,4 +165,9 @@ func endingProc() {
 	logger.Close()
 	http.Shutdown()
 	fmt.Println("agentd stopped successfully")
+}
+
+func K8sMonPordStart() {
+	fmt.Println(config.Config.K8sClient.Apihost)
+	fmt.Println(config.Config.K8sClient.Apitoken)
 }
