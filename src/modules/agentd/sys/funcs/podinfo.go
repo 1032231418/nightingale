@@ -15,20 +15,43 @@
 package funcs
 
 import (
+	"context"
+	"fmt"
 	"github.com/didi/nightingale/v4/src/common/dataobj"
+	config2 "github.com/didi/nightingale/v4/src/modules/agentd/config"
 	"github.com/didi/nightingale/v4/src/modules/agentd/core"
+	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+	"k8s.io/client-go/rest"
+	metrics "k8s.io/metrics/pkg/client/clientset/versioned"
 )
 
 func PodMetrics() []*dataobj.MetricValue {
-	return []*dataobj.MetricValue{
-		core.GaugeValue("mem.bytes.used", memUsed),
-		core.GaugeValue("mem.bytes.free", memFree),
-		core.GaugeValue("mem.bytes.used.percent", pmemUsed),
-		core.GaugeValue("mem.bytes.buffers", m.Buffers),
-		core.GaugeValue("mem.bytes.cached", m.Cached),
-		core.GaugeValue("mem.swap.bytes.total", m.SwapTotal),
-		core.GaugeValue("mem.swap.bytes.used", m.SwapUsed),
-		core.GaugeValue("mem.swap.bytes.free", m.SwapFree),
-		core.GaugeValue("mem.swap.bytes.used.percent", pswapUsed),
+	Host := config2.Config.K8sClient.Apihost
+	BearerToken := config2.Config.K8sClient.Apitoken
+	config := &rest.Config{
+		Host:            Host,
+		BearerToken:     BearerToken,
+		TLSClientConfig: rest.TLSClientConfig{Insecure: true},
 	}
+	clientset, err := metrics.NewForConfig(config)
+	if err != nil {
+		panic(err.Error())
+	}
+	// fmt.Println(clientset.MetricsV1beta1().NodeMetricses().List(context.TODO(), metav1.ListOptions{}))
+	podinfos, err := clientset.MetricsV1beta1().PodMetricses("dev").List(context.TODO(), metav1.ListOptions{})
+	if err != nil {
+		panic(err.Error())
+	}
+
+	var ret []*dataobj.MetricValue
+
+	for _, podinfo := range podinfos.Items {
+		for _, pod := range podinfo.Containers {
+			tags := fmt.Sprintf("pod_name=%s", pod.Name)
+			ret = append(ret, core.GaugeValue("pod.mem.used", pod.Usage.Memory().Value()/(1024*1024), tags))
+			ret = append(ret, core.GaugeValue("pod.cpu.used", pod.Usage.Cpu().MilliValue(), tags))
+		}
+	}
+
+	return ret
 }

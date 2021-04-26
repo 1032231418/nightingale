@@ -39,12 +39,13 @@ require (
 	github.com/ugorji/go/codec v1.1.7
 	go.uber.org/automaxprocs v1.3.0 // indirect
 	golang.org/x/oauth2 v0.0.0-20200107190931-bf48bf16ab8d
-	golang.org/x/text v0.3.3
+	golang.org/x/text v0.3.4
 	gopkg.in/alexcesaro/quotedprintable.v3 v3.0.0-20150716171945-2caba252f4dc // indirect
 	gopkg.in/gomail.v2 v2.0.0-20160411212932-81ebce5c23df
 	gopkg.in/ldap.v3 v3.1.0
 	gopkg.in/square/go-jose.v2 v2.5.1 // indirect
-	gopkg.in/yaml.v2 v2.3.0
+	gopkg.in/yaml.v2 v2.4.0
+	k8s.io/metrics v0.21.0 // indirect
 	xorm.io/core v0.7.3
 	xorm.io/xorm v0.8.1
 )
