@@ -70,6 +70,8 @@ func main() {
 		os.Exit(1)
 	}
 
+	fmt.Println(config.Config.K8sClient)
+
 	if config.Config.Enable.Mon {
 		monStart()
 	}

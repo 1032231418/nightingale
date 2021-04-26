@@ -78,3 +78,6 @@ sys:
 
   #ntpServers:
   #  - ntp1.aliyun.com
+k8sclient:
+  apihost: asdfasdf
+  apitoken:  sdfasdfasdfasd

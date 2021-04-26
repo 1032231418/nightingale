@@ -15,15 +15,16 @@ import (
 )
 
 type ConfigT struct {
-	Logger  loggeri.Config `yaml:"logger"`
-	Stra    straSection    `yaml:"stra"`
-	Worker  workerSection  `yaml:"worker"`
-	Sys     sys.SysSection `yaml:"sys"`
-	Enable  enableSection  `yaml:"enable"`
-	Job     jobSection     `yaml:"job"`
-	Report  reportSection  `yaml:"report"`
-	Udp     UdpSection     `yaml:"udp"`
-	Metrics MetricsSection `yaml:"metrics"`
+	Logger    loggeri.Config `yaml:"logger"`
+	Stra      straSection    `yaml:"stra"`
+	Worker    workerSection  `yaml:"worker"`
+	Sys       sys.SysSection `yaml:"sys"`
+	Enable    enableSection  `yaml:"enable"`
+	Job       jobSection     `yaml:"job"`
+	Report    reportSection  `yaml:"report"`
+	Udp       UdpSection     `yaml:"udp"`
+	Metrics   MetricsSection `yaml:"metrics"`
+	K8sClient k8sClient      `yaml:"k8sClient"`
 }
 
 type UdpSection struct {
@@ -75,6 +76,11 @@ type workerSection struct {
 type jobSection struct {
 	MetaDir  string `yaml:"metadir"`
 	Interval int    `yaml:"interval"`
+}
+
+type k8sClient struct {
+	Apihost  string `yaml:"apihost"`
+	Apitoken string `yaml:"apitoken"`
 }
 
 var (
