@@ -47,7 +47,7 @@ func PodMetrics() []*dataobj.MetricValue {
 
 	for _, podinfo := range podinfos.Items {
 		for _, pod := range podinfo.Containers {
-			tags := fmt.Sprintf("pod_name=%s", pod.Name)
+			tags := fmt.Sprintf("pod_name=%s,namespace=%s", podinfo.Name, podinfo.Namespace)
 			ret = append(ret, core.GaugeValue("pod.mem.used", pod.Usage.Memory().Value()/(1024*1024), tags))
 			ret = append(ret, core.GaugeValue("pod.cpu.used", pod.Usage.Cpu().MilliValue(), tags))
 		}
